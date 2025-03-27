@@ -5,8 +5,8 @@ import numpy as np
 
 from cpipe.module.model.facematching import FaceLibrary
 from cpipe.module.model.facerecognition import FaceRecognition
-from cpipe.module.model.retinaface import RetinafaceTRT
-from cpipe.module.model.yolov7 import YOLOv7TRT
+from cpipe.module.model.retinaface import Retinaface
+from cpipe.module.model.yolov7 import YOLOv7
 from cpipe.module.streamer import VideoStreamer
 from cpipe.module.insight import CPipeInsight
 from cpipe.module.node import Node
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     streams_rtsp = []
     stream = VideoStreamer("stream", "rtmp://192.168.8.122:1935/live/7777", 3, 1, once_mode=True)
 
-    detect = YOLOv7TRT("YOLOv7",
+    detect = YOLOv7("YOLOv7",
                      "../../src/model_files/yolov7-tiny_office_batch4_GPU3070_0.65_0.45.engine",
                      3,
                      (3, 640, 640),
@@ -35,7 +35,7 @@ if __name__ == "__main__":
                      area_flag=True
                      )
 
-    rf = RetinafaceTRT(
+    rf = Retinaface(
         "retinaface",
         "../../src/model_files/416x416-det_10g_batch.engine",
         3,
