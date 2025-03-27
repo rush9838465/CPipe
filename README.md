@@ -1,0 +1,302 @@
+
+
+### 更新内容：V3.5.6 （2025-3-x）
+1. 增加cpipe格式加密模型(cpipe模型可以再cpipe框架下运行, 不依赖设备license, codex模型依赖设备license). demo见[demo.py](examples%2Fmodel_encryption%2Fdemo.py)
+2. 新增VideoStreamer支持本地USB摄像头. demo见[demo.py](examples%2Fstreamer%2Fdemo.py)
+
+
+### 更新内容：V3.5.5 （2025-3-26）
+1. 优化麒麟系统插拔U盘导致license失效问题
+2. retinafaceTRT节点增加支持一阶段检测功能(具体代码见[face_recognition](examples%2Fface_recognition))
+3. 新增[examples](examples)目录, 用于存放示例代码
+4. 新增CPipeTools类
+   ```python
+   from cpipe.tools.cpipetools import CPipeTools
+   # 模型加密方法
+   CPipeTools.encrypt_models("./movenet_person_pose.onnx","1234567890123456",
+   "./1234567890123456.cpipe.license") # 文件模式
+   CPipeTools.encrypt_models("./models","1234567890123456",
+   "./1234567890123456.cpipe.license") # 文件夹模式
+   ```
+5. 增加硬件RK3588适配: 案例代码见[main_RK3588.py](examples%2Fface_recognition%2Fmain_RK3588.py)
+   - 已适配yolov7 (删除yolov7TRT, 统一到yolov7)
+   - 已适配retinaface
+   - 已适配adaface
+   - 已适配facerecognition
+   - 
+6. yolov7 增加 ONNX模型适配, 模型结构必须满足如下:
+
+   ![img.png](img.png)
+
+7. 优化WSL license问题
+8. 增加retinaface ONNX模型适配(删除RetinafaceTRT类, 统一到Retinaface)
+
+
+
+### 更新内容：V3.5.0 （2025-3-11）
+1. 优化VideoStreamer节点, 支持动态设置process_frame_interval参数, 用于调整推理速度.
+   使用方法: streamer = VideoStreamer(name, one, queue_size, process_frame_interval=1)
+            streamer.process_frame_interval = 2
+2. 新增DinoEmbedding算法模型
+3. 新增DinoClassifier分类算法模型
+4. Box类新增box_embedding/box_embedding_name/box_embedding_score 用于存储box的embedding信息
+5. 新增yolov11TRT节点(目标检测)
+6. 新增YOLOv11InstanceSeg 实例分割算法模型(易金城)
+7. 新增MoveNetPersonPose节点
+8. 新增日志文件名添加标识功能:
+   注:在所有CPipe类初始化前优先初始化项目代码生效:
+   import cpipe.config.config
+   cpipe.config.config.CLOGER_FILE_NAME_MARK = "996+996"  # 
+9. ImageStreamer新增动态喂图功能: 通过Queue传入图片路径或者numpy array
+10. 新增CImage类 info 成员变量, 用于存储图片信息(dict)
+11. 解决WSL重启系统后license失效问题
+12. 解决国产麒麟系统重启后license失效问题
+
+
+### 更新内容：V3.2.2 （2024-12-25）
+1. 优化CPipe退出机制: Cpipe.exit()/Cpipe.terminate()/linux kill指令/ctrl+c等退出方式, 会自动退出所有子进程,并执行所有Node的lastly方法.
+2. 新增Node可配置daemon参数, 用于设置Node是否为守护进程, 默认为True. 注:对于需要在Node中创建子进程的情况, 需要设置为False.
+3. logger增加warning方法; logger日志信息取消调用函数定位显示
+4. 将SaveInsight整合到CPipeInsight中, 通过参数save_video=True开启功能, 取消SaveInsight节点
+5. 将UIinsight整合到CPipeInsight中, 通过参数ui_insight=True开启功能, 取消UIInsight节点
+```python
+    cpipeinsight = CPipeInsight(
+                                  http_insight=True,
+    
+                                  ui_insight=True,
+          
+                                  save_video=True, auto_exit=True, save_file_names={stream_zhu.nodeName: student_id},
+                                  save_duration_seconds=int(30),
+                                  save_path="/mnt/d/save_stream"
+     )
+```
+
+6. moveNet节点新增支持不同输入尺寸(需结合相关训练代码).
+7. 增加https支持, 通过参数ssl=True开启, 默认为False.
+8. 合并LocalVideoStreamer和VideoStreamer, 统一通过VideoStreamer 自动识别本地文件和网络流地址.
+9. 增加VideoStreamer动态设置流地址功能, 通过reset_stream方法设置.(如果共享内存模式下(SHARE_MEMORY_MODE=True),流分辨率不变)
+
+### 更新内容：V3.2.0 （2024-12-2）
+1. 所有模型增加灰度模式支持
+2. 新增手掌关键点模型RTMPOSE
+3. 修复日志部分bug
+4. Node类增加lastly方法, 用于进程退出时调用， 
+   signal.signal(signal.SIGINT, self.lastly)  # 退出时调用lastly方法
+5. 增加 CPipeInsight 参数：
+show_polygon_box: self.kwargs.get("show_polygon_box", False)
+show_box: self.kwargs.get("show_box", True)
+show_box_name: self.kwargs.get("show_box_name", True)
+show_polygon: self.kwargs.get("show_polygon", True)
+show_mask: self.kwargs.get("show_mask", True)
+show_key_points: self.kwargs.get("show_key_points", True)
+show_person: self.kwargs.get("show_person", True)
+show_classification: self.kwargs.get("show_classification", True)
+show_track: self.kwargs.get("show_track", True)
+
+
+### 更新内容：V3.1.1 （2024-11-15）
+1. 所有代码增加注释
+2. 增加分割模型支持
+3. 修復bug
+
+
+### 更新内容：V3.0.0 （2024-10-18）
+1. 所有现有推理模型全波统一推理框架:
+   - 大部分模型直接支持onnx/TRT/torch jit模型文件输入: 
+   - 新增 Cmodel/InferenceEngine/CDetector/COBBDetector/CClassifier/CFace/CEmbedding基础类
+2. 优化跳帧显示逻辑, 无需每个node单独写捕获逻辑代码,框架自动完成
+3. 优化node显示页面, 采用antv x6框架
+4. 新增支持快速配置框架功能: 通过一个配置文件([launch.yaml](config%2Flaunch.yaml))直接生成node链接关系, 无需多余代码.
+    - cpipe ./config/launch.yaml
+5. 调整cmask标定功能, 默认所有算法支持标定功能:
+    - Node.special_mask = {"polygons": [], "lines": []} 可以指定画的cmask区域
+6. 新增: 可以通过页面添加streamer功能, 支持自动识别流类型,自动选择streamer子类.
+7. 增加cpu 拉流和cuda拉流并存模式
+8. 增加日志不同等级不同颜色
+9. 调整TRT/ONNX模型支持多GPU功能,无需设置环境变量CUDA_VISIBLE_DEVICES
+    - 通过device参数: cuda:x 和 cpu 指定
+10. 增加streamer支持指定gpu
+    - 通过device参数: cuda:x 和 cpu 指定
+
+    
+### 更新内容：V2.5.3 （2024-9-x）
+1. 所有Streamer子类 增加参数:
+   - all_ready: 开启时会等待所有非VideoStreamer加入ready状态(调用Node.ready()进入ready状态), 默认为True.
+2. 调整抛帧逻辑:
+   - 省去原有的update_dump_frame_history方法
+   - 统一调整抛帧记录到cqueue中
+   - 抛帧显示统一调整的Node页面中![node_show.png](doc%2Fnode_show.png)
+   - 调整统计帧率为每秒统计一次
+3. 优化Insight页面FPS显示
+   - 算法推理速度/拉流速度, 每帧推理消耗时间ms(process_frame_interval值)
+
+
+### 更新内容：V2.5.1 （2024-9-9）
+1. LocalVideoStreamer 增加参数 
+    - delay_start_time=0 # 延迟开始时间, 单位秒
+2. CImage 增加变量
+    - self.frame_total = 0 # 总帧数
+    - self.frame_current_idx = 0 # 当前帧数
+   注: 这两个参数只支持 LocalVideoStreamer 模式
+3. 增加MMShuffleNetTRT节点, 支持MMdetection的ShuffleNetV2模型
+4. 修复Node.exit()报错bug
+5. 新增Node ready/unready方法, 用于标识节点是否准备好可以接收数据, 通过is_ready()方法获取节点是否准备好
+    def ready(self):
+        self.__ready.value = 1
+
+    def unready(self):
+        self.__ready.value = 0
+
+    def is_ready(self):
+        if self.__ready.value == 1:
+            return True
+        return False
+6. 新增insight页面显示日志功能:
+   - 日志显示方法: 页面显示时自动会将list中的每一行添加一个换行符"\n"
+```python
+for stream_name in new_cdata.images.keys():
+    new_cdata.messages[stream_name] = []
+    for one_sps in ScoringPoints.__ALL_SCORING_POINTS__:
+        if stream_name in one_sps.streamer_name_group:
+            for j, one_sc in enumerate(one_sps.scoring_points):
+                new_cdata.messages[stream_name].append(str(one_sc))
+```
+
+
+
+### 更新内容：V2.5.0 （2024-8-30）
+##############对2.4.5 部分不兼容,需要修改部分代码###################
+det_bboxes = new_cdata.bboxes.values()
+det_stream_names = new_cdata.bboxes.keys()
+改为
+det_stream_names, det_bboxes = new_cdata.get_bboxes()
+
+增加Box采用: 可以参考yolov8 _start_secondary() 方法相关代码
+new_cdata.add_bboxes(frames_stream_names[idx_img], new_bbox)
+##############对2.4.5 部分不兼容,需要修改部分代码###################
+
+
+### 更新内容：V2.4.5 （2024-8-29）
+1. 新增 config参数: CPIPE_BLOCKING_MODE: False # 开启CPIPE阻塞模式, 必须配合BETWEEN_NODES_SHARE_MEMORY_MODE=True使用, 用于逐帧检测用,只适合本地视频模式
+2. 新增 movenetTRT节点
+3. movnetTRT/shufflenetTRT/yolov7TRT/新增二阶段参数secondary_class_names, 用于二阶段检测, 例如: ["person", "car"]
+   - 开启二阶段检测后: 只有前阶段中box的box_class_name在secondary_class_names中才会进行第二阶段检测
+4. cdata box中新增字段: "box_key_points" 用于存储box关键点信息
+5. 修复yolov8TRT节点bug
+
+
+### 更新内容：V2.4.4 （2024-8-15）
+1. SaveInsight 新增参数 
+   - auto_exit=False # 当streamer跑完(支持LocalVideoStreamer, 并once_mode=True)后整个CPipe会自动退出, 默认为False, 开启后save_duration_second参数无效
+   注: auto_exit=True 时, 必须设置 Node.launch(check_node=True, auto_restart=False), 否则会导致CPipe无法退出.
+2. 新增Node类以下方法
+  - Node.restart() 重启整个cpipe
+  - Node.exit() 退出整个cpipe
+  - get_pid() 获取node的pid
+  - get_exitcode() 获取node的退出码
+
+
+### 更新内容：V2.4.3 （2024-8-12）
+1. LocalVideoStreamer,ImageStreamer 新增参数 
+   - block_mode=False # 是否阻塞模式
+   - once_mode=False # 是否只拉取一次文件,不循环读取
+2. 优化授权逻辑
+3. 修复2.4.2版本已知bug
+4. 新增方法Node.restart(), 用于重启整个cpipe
+
+
+### 更新内容：V2.4.2 （2024-8-8）
+1. 修改VideoStreamers为多进程模式进行短连接拉流.(组内每个流拉取一次就关闭, 一直循环)
+2. 优化http_insight画面显示左上角delay显示,改为 &/$FPS  其中&为推理速度(推理帧率), $为videostreamer最近1秒拉流帧数(网络问题会有波动).
+3. 优化Tracker/HumanFLowStatistics(客流)代码提升推理速度
+
+
+### 更新内容：V2.4.0 （2024-8-2）
+![index.png](doc%2Findex.png)
+1. 新增CPipeInsight节点.
+   - HTTPInsight: 通过http_insight参数开启原来的HTTPInsight功能
+   - 开启CPipeInsight时原来NodeInsight功能默认开启
+   - 支持通过页面配置算法的检测区域、画线
+   - 支持通过页面重启服务器
+   - 支持通过页面获取设备唯一ID,用于授权license
+2. 新增客流统计算法: HumanFLowStatistics("hfs", queue_size, miss_count_thres=5)
+3. 调整画框逻辑: 注:所有__***__ 为特殊区域, 也就是算法必要的区域.
+```python
+   stream = VideoStreamer(name, one, queue_size, process_frame_interval)
+            ret, msg = stream.cmask.add_polygon("yolov7", "area")
+            if not ret:
+                print(msg)
+            ret, msg = stream.cmask.add_polygon("hfs", "__in__") # 人流量统计区域
+            if not ret:
+                print(msg)
+            ret, msg = stream.cmask.add_polygon("hfs", "__out__") # 人流量统计区域
+            if not ret:
+                print(msg)
+            ret, msg = stream.cmask.add_line("hfs", "line1")
+            if not ret:
+                print(msg)
+```
+4. 新增CMask类, 用于管理检测区域和画线.
+5. 新增config/config.yaml参数:
+    - CMASK_YAML_PATH: "./cmask.yaml"    # 检测区域和画线配置文件
+    - CMASK_YAML_AUTO_LOAD: True     # 是否自动加载本地文件./cmask.yam的配置信息
+    - NODE_LAUNCH_INTERVAL_TIME: 3 # 节点启动间隔时间, 默认3秒, 开发阶段可以设置小一点,免得每次都要等3秒
+6. 新增VideoStreamers: streamer组模式进行短连接拉流.(组内每个流拉取一次就关闭, 一直循环)
+```python
+    group_streamer = VideoStreamers(nodeName, ["rtsp1**", "rtsp2**"], 3)
+    for streamer_name, streamer in group_streamer.group_node.items():
+        streamer.cmask.add_polygon("yolov7", "ke_area", [[0.1, 0.1], [0.2, 0.2], [0.2, 0.1], [0.1, 0.2]])  # 特殊区域检测:客流区域
+        streamer.cmask.add_polygon("hfs", "__in__")  # 特殊区域检测:客流入口
+        streamer.cmask.add_polygon("hfs", "__out__")  # 特殊区域检测:客流出口
+```
+
+### 更新内容：V2.3.2 （2024-7-22）
+1. CData增加新字段shows(dict, K:V => stream_name: [show_type, dict(show_data)]), 通过此字段可以在insight中显示算法结果, 用于调试和展示.
+show_type: text, line, polygon.
+eg:
+```python
+{"stream_name1": [
+                ("text", {"coord":np.array([996, 996], dtype=np.int32), "data": 996, "color":(0, 0, 255), "text_size": 40}),
+                ("line", {"coord":np.array([[996, 996], [996, 996]], dtype=np.int32)}, "color":(0, 0, 255), "thickness": 1),
+                ("polygon", {"coord":np.array([[700, 100], [1820, 980], [1000, 1030], [550, 800]], dtype=np.int32)}, "color":(0, 0, 255), "thickness": 1, "isclosed": True),
+                ]
+}
+```
+
+### 更新内容：V2.3.1 （2024-7-18）
+1. 优化yolov8TRT节点性能。（吴瑞辉）
+2. 修复Clogger在wheel版本下报错问题.
+3. 新增人脸质量检测功能facerecognition和adaface均支持:
+    - 参数 face_quality_model_path, 人脸质量检测模型位置
+    - 参数 face_quality_thresh, 人脸质量检测阈值
+    - 效果验证方法: 在insight显示画面中,如果有人脸框和5个关键点,但是没有显示人脸名字(unknow也算名字),那这个人脸就在质量检测过程中被抛弃了.
+4. 调整检测区域功能坐标由原来的像素坐标改为百分比坐标, 以适应不同分辨率的输入图像.
+5. 新增节点自动修复开关, Node.launch参数: auto_repair, 默认为False.
+
+
+### 更新内容：V2.3 （2024-7-12）
+1. 新增yolov8TRT节点。(支持yolov8-obb)（贡献者：吴瑞辉）
+2. 调整NodeInsight节点_start()方法
+3. 增加节点自动修复功能:
+    - 支持所有节点异常dead, 会自动重启节点
+    - 支持streamer节点分辨率发生改变, 会自动重启整个cpipe. 注:因为分辨率发生改变, 如果使用了polygens参数需要自行修改.
+
+
+### 更新内容：V2.2 （2024-6-27）
+1. 调整pu_cdata() 为非阻塞模式
+2. 修复license 部分bug问题
+3. 修复Clogger节点上传云端日志功能在wheel版本下无效问题
+4. 合并所有版本（共享内存、cuda opencv、标准版）到同一个wheel包中，通过config.yaml配置文件选择使用版本(第一次安装2.2版本先删除本地config/config.yaml，再启动程序会自动生成新的config.yaml文件)，cpipe.license授权。 标注版本需要codex.cpipe.license授权。
+5. 优化 shufflenet* detect_batch 后处理功能性能，提升推理速度（5%以上）。（贡献者：黄啸）
+6. 新增部署版本wheel安装包（不包含.pyi和py文件）
+
+
+### 更新内容：V2.1 （2024-6-24）
+1. 针对VideoStreamer节点：新增short_connection_delay 参数，支持短连接； 新增polygons参数，支持区域检测（暂时只支持yolov7、yolov10节点，其它节点需要修改推理代码）
+2. 新增ImageStreamer节点：支持图片推流，支持图片路径和文件夹路径
+3. 针对Clogger节点：新增支持日志上传云端功能。
+4. 新增SaveInsight节点：支持保存推理结果保存到本地视频文件。
+4. 新增shufflenetOnnx节点。（贡献者：黄啸）
+5. 新增yolov10TRT节点。
+6. 新增 Node.launch(check_node=True) check_node参数，用于检查节点是否正常启动，并支持日志上报云端。
+7. 修复config/config.yaml 中参数 LICENSE_PATH、CODEX_LICENSE_PATH 无效问题。
