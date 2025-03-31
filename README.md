@@ -35,6 +35,9 @@ CPipe框架功能:
 ![cpipe.png](doc%2Fcpipe.png)
 
 ### 基于CPipe SDK 在Web页面上实时显示效果:
+
+https://www.bilibili.com/video/BV1ftZJYBEBW/
+
 ![demo1.png](doc%2Fdemo1.png)
 
 ### 详细使用手册见:
