@@ -34,7 +34,7 @@ CPipe框架功能:
 
 ![cpipe.png](doc%2Fcpipe.png)
 
-### 基于CPipe SDK 在Web页面上实时显示效果
+### 基于CPipe SDK 在Web页面上实时显示效果:
 ![demo1.png](doc%2Fdemo1.png)
 
 ### 详细使用手册见:
@@ -49,7 +49,8 @@ pip install cpipe-3.0.0-cp39-cp39-linux_x86_64.whl
 ### 更新内容：V3.5.6 （2025-3-x）
 1. 增加cpipe格式加密模型(cpipe模型可以再cpipe框架下运行, 不依赖设备license, codex模型依赖设备license). demo见[demo.py](examples%2Fmodel_encryption%2Fdemo.py)
 2. 新增VideoStreamer支持本地USB摄像头. demo见[demo.py](examples%2Fstreamer%2Fdemo.py)
-
+3. 增加部分案例[examples](examples)
+4. 适配onnxruntime新版本
 
 ### 更新内容：V3.5.5 （2025-3-26）
 1. 优化麒麟系统插拔U盘导致license失效问题
