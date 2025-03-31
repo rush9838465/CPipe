@@ -32,6 +32,14 @@ CPipe框架功能:
 价值:
 降低研发成本/减少开发周期/提供稳定且高性能的AI算法推理引擎/提供高并发视频流实时算法推理/提供算法模型机代码加密安全
 
+![cpipe.png](doc%2Fcpipe.png)
+
+### 基于CPipe SDK 在Web页面上实时显示效果
+![demo1.png](doc%2Fdemo1.png)
+
+### 详细使用手册见:
+[CPipe使用手册v3.3.0.docx](doc%2FCPipe%CA%B9%D3%C3%CA%D6%B2%E1v3.3.0.docx)
+
 ### CPipe安装方法:
 采用pip安装指令,支持Python 3.8及以上,并提供相关Docker镜像.
 
@@ -64,7 +72,7 @@ pip install cpipe-3.0.0-cp39-cp39-linux_x86_64.whl
    - 
 6. yolov7 增加 ONNX模型适配, 模型结构必须满足如下:
 
-   ![img.png](img.png)
+   ![yolov7.png](doc%2Fyolov7.png)
 
 7. 优化WSL license问题
 8. 增加retinaface ONNX模型适配(删除RetinafaceTRT类, 统一到Retinaface)
@@ -156,4 +164,8 @@ show_track: self.kwargs.get("show_track", True)
 10. 增加streamer支持指定gpu
     - 通过device参数: cuda:x 和 cpu 指定
 
+
+![contacts.jpg](doc%2Fcontacts.jpg)
+
+邮箱: 9838465@qq.com
 
