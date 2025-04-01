@@ -36,9 +36,8 @@ CPipe框架功能:
 
 ### 基于CPipe SDK 在Web页面上实时显示效果:
 
-[视频标题](https://www.bilibili.com/video/BV1ftZJYBEBW)
+[点击观看人体关键点视频演示](https://www.bilibili.com/video/BV1ftZJYBEBW)
 
-![demo1.png](doc%2Fdemo1.png)
 
 ### 详细使用手册见:
 [CPipe使用手册v3.3.0.docx](doc%2FCPipe%CA%B9%D3%C3%CA%D6%B2%E1v3.3.0.docx)
